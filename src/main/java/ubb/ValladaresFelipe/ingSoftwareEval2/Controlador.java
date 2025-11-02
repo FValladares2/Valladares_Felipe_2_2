@@ -45,7 +45,7 @@ public class Controlador {
     }
 
     @GetMapping(path="/onem")
-    public @ResponseBody Mueble listarMueble(int id_mueble) {
+    public @ResponseBody Mueble listarMueble(@RequestParam int id_mueble) {
         Optional<Mueble> n = muebles.findById(id_mueble);
         return n.orElse(null);
     }
@@ -57,7 +57,7 @@ public class Controlador {
     }
 
     @GetMapping(path="/onev")
-    public @ResponseBody Variante listarVariante(int id_variante) {
+    public @ResponseBody Variante listarVariante(@RequestParam int id_variante) {
         Optional<Variante> n = variantes.findById(id_variante);
         return n.orElse(null);
     }
@@ -69,7 +69,7 @@ public class Controlador {
     }
 
     @GetMapping(path="/cot")
-    public @ResponseBody Integer cotizar(int id_variante) {
+    public @ResponseBody Integer cotizar(@RequestParam int id_variante) {
         //encuentra la cotización total dada id_variante (precio_base + precio_extra)
         Variante v = listarVariante(id_variante);
         Mueble m = listarMueble(v.getId_mueble());
@@ -78,17 +78,22 @@ public class Controlador {
     }
 
     @PostMapping(path="/ven")
-    public @ResponseBody String venderVariante(int id_variante, int cantidad){
+    public @ResponseBody String venderVariante(@RequestParam int id_variante,
+                                               @RequestParam int cantidad) throws Exception{
         Variante v = listarVariante(id_variante);
         if (v != null){
             Mueble m = listarMueble(v.getId_mueble());
             int stockv = v.getStock();
             int stockm = m.getStock();
+            if (m.getEstado().equals("INACTIVO")){
+                return "Mueble inactivo";
+            }
+
             if (stockm >= cantidad && stockv >= cantidad) {
                 v.setStock(stockv - cantidad);
                 m.setStock(stockm - cantidad);
                 return "Vendido";
-            }else return "Stock insuficiente en variante "+id_variante;
+            }else throw new Exception("Stock insuficiente en variante "+id_variante);
 
         }return "Variante inexistente";
     }
@@ -150,13 +155,25 @@ public class Controlador {
     }
 
     @PostMapping(path="/del")
-    public @ResponseBody String desactivarMueble (@RequestParam Integer id_usuario) {
+    public @ResponseBody String desactivarMueble (@RequestParam Integer id_mueble) {
         //(no elimina, pero si se desactiva en bdd)
-        if (muebles.existsById(id_usuario)){
-            Mueble m = muebles.findById(id_usuario).get();
+        if (muebles.existsById(id_mueble)){
+            Mueble m = muebles.findById(id_mueble).get();
             m.setEstado("INACTIVO");
             muebles.save(m);
             return "Desactivado";
+        }else{
+            return "Mueble no encontrado";
+        }
+    }
+
+    @PostMapping(path="/act")
+    public @ResponseBody String activarMueble (@RequestParam Integer id_mueble) {
+        if (muebles.existsById(id_mueble)){
+            Mueble m = muebles.findById(id_mueble).get();
+            m.setEstado("ACTIVO");
+            muebles.save(m);
+            return "Activado";
         }else{
             return "Mueble no encontrado";
         }
