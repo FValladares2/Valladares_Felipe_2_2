@@ -44,19 +44,6 @@ public class Controlador {
         n.setMueble(m);
         variantes.save(n);
         return "Creado";
-        /*
-        Variante finalN = variantes.save(n);;
-        n = muebles.findById(id_mueble).map(mueb -> {
-            finalN.setMueble(mueb);
-            return variantes.save(finalN);
-        }).orElse(null);
-
-        if (n != null) return "Creado";
-        else {
-            variantes.delete(finalN);
-            return "Mueble no encontrado";
-        }
-         */
     }
 
     @GetMapping(path="/onem")
