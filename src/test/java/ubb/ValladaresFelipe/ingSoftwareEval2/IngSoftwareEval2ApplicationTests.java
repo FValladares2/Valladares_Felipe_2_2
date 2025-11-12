@@ -16,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class IngSoftwareEval2ApplicationTests {
     @Autowired
     private Controlador c;
-    //@Autowired
-    //EntityManagerFactory emf;
 	@Test
 	void contextLoads() {
         assertThat(c).isNotNull();
@@ -28,7 +26,6 @@ class IngSoftwareEval2ApplicationTests {
         //No utiliza mockito para testear en mock environment
         // Es necesario tener la bdd corriendo con XAMPP para que funcione
 
-        //EntityManager em = emf.createEntityManager();
         //Create mueble
         assertEquals("Creado", c.crearMueble("testcrud", "mesa", 15,
                 8, "madera", "activo", "mediano"));
@@ -36,7 +33,6 @@ class IngSoftwareEval2ApplicationTests {
         assertEquals("mesa_madera", c.listarMueble(2).getNombre_mueble());
         Mueble m = c.listarMueble("testcrud");
         assertEquals("testcrud", c.listarMueble(m.getID_mueble()).getNombre_mueble());
-        //em.persist(m);
         //Update mueble
         assertEquals("Actualizado", c.actualizarMueble(1, "mueble_ejemplo",
                 "silla", 120, "madera", "activo", "mediano"));
@@ -50,7 +46,6 @@ class IngSoftwareEval2ApplicationTests {
         //Read variante
         assertEquals("ruedas de escritorio", c.listarVariante(1).getModificacion());
         Variante v = c.listarVariante("test_variante");
-        //em.persist(v);
         //Update variante
         assertEquals("Comprado: 4", c.comprarVariante(v.getId_variante(), 4));
         try {
@@ -63,7 +58,6 @@ class IngSoftwareEval2ApplicationTests {
         //comentar eliminar para ver si funciona en bdd
         assertEquals("Eliminado", c.eliminarMueble(m.getID_mueble()));
 
-        //em.close();
     }
 
     @Test
