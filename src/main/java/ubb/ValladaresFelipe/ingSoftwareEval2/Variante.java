@@ -1,22 +1,22 @@
 package ubb.ValladaresFelipe.ingSoftwareEval2;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Variante {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID_variante")
     private Integer id_variante;
 
-    private Integer id_mueble;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_mueble", nullable = false)
+    private Mueble mueble;
+    @Column(name = "modificacion")
     private String modificacion;
-
+    @Column(name = "precio_extra")
     private Integer precio_extra;
-
+    @Column(name = "stock")
     private Integer stock;
 
     public Integer getId_variante() {
@@ -27,12 +27,12 @@ public class Variante {
         this.id_variante = id_variante;
     }
 
-    public Integer getId_mueble() {
-        return id_mueble;
+    public Mueble getMueble() {
+        return mueble;
     }
 
-    public void setId_mueble(Integer id_mueble) {
-        this.id_mueble = id_mueble;
+    public void setMueble(Mueble mueble) {
+        this.mueble = mueble;
     }
 
     public String getModificacion() {

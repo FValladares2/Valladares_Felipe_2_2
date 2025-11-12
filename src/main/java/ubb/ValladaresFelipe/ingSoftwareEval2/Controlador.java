@@ -14,7 +14,7 @@ public class Controlador {
     @Autowired
     private RepoVariante variantes;
 
-    @PostMapping(path="/addm") // Map ONLY POST Requests
+    @PostMapping(path="/addm")
     public @ResponseBody String crearMueble (@RequestParam String nombre
             , @RequestParam String tipo, @RequestParam Integer precio_base
             , @RequestParam Integer stock, @RequestParam String material
@@ -31,22 +31,43 @@ public class Controlador {
         return crearVariante(m.getID_mueble(), "Normal", 0, stock);
     }
 
-    @PostMapping(path="/addv") // Map ONLY POST Requests
+    @PostMapping(path="/addv")
     public @ResponseBody String crearVariante (@RequestParam Integer id_mueble
             , @RequestParam String modificacion, @RequestParam Integer precio_extra
             , @RequestParam Integer stock) {
         Variante n = new Variante();
-        n.setId_mueble(id_mueble);
         n.setModificacion(modificacion);
         n.setPrecio_extra(precio_extra);
         n.setStock(stock);
+        Mueble m = muebles.findById(id_mueble).orElse(null);
+        if (m == null) {return "No se encontró el mueble";}
+        n.setMueble(m);
         variantes.save(n);
         return "Creado";
+        /*
+        Variante finalN = variantes.save(n);;
+        n = muebles.findById(id_mueble).map(mueb -> {
+            finalN.setMueble(mueb);
+            return variantes.save(finalN);
+        }).orElse(null);
+
+        if (n != null) return "Creado";
+        else {
+            variantes.delete(finalN);
+            return "Mueble no encontrado";
+        }
+         */
     }
 
     @GetMapping(path="/onem")
     public @ResponseBody Mueble listarMueble(@RequestParam int id_mueble) {
         Optional<Mueble> n = muebles.findById(id_mueble);
+        return n.orElse(null);
+    }
+
+    @GetMapping(path="/onemnombre")
+    public @ResponseBody Mueble listarMueble(@RequestParam String nombre) {
+        Optional<Mueble> n = muebles.findMuebleByNombre(nombre);
         return n.orElse(null);
     }
 
@@ -62,6 +83,12 @@ public class Controlador {
         return n.orElse(null);
     }
 
+    @GetMapping(path="/onevnombre")
+    public @ResponseBody Variante listarVariante(@RequestParam String modificacion) {
+        Optional<Variante> n = variantes.findVarianteByModif(modificacion);
+        return n.orElse(null);
+    }
+
     @GetMapping(path="/allv")
     public @ResponseBody Iterable<Variante> listarVariantes() {
         // This returns a JSON or XML with the users
@@ -72,9 +99,8 @@ public class Controlador {
     public @ResponseBody Integer cotizar(@RequestParam int id_variante) {
         //encuentra la cotización total dada id_variante (precio_base + precio_extra)
         Variante v = listarVariante(id_variante);
-        Mueble m = listarMueble(v.getId_mueble());
 
-        return v.getPrecio_extra() + m.getPrecio_base();
+        return v.getPrecio_extra() + v.getMueble().getPrecio_base();
     }
 
     @PostMapping(path="/ven")
@@ -82,17 +108,16 @@ public class Controlador {
                                                @RequestParam int cantidad) throws Exception{
         Variante v = listarVariante(id_variante);
         if (v != null){
-            Mueble m = listarMueble(v.getId_mueble());
             int stockv = v.getStock();
-            int stockm = m.getStock();
-            if (m.getEstado().equals("INACTIVO")){
+            int stockm = v.getMueble().getStock();
+            if (v.getMueble().getEstado().equals("INACTIVO")){
                 return "Mueble inactivo";
             }
 
             if (stockm >= cantidad && stockv >= cantidad) {
                 v.setStock(stockv - cantidad);
-                m.setStock(stockm - cantidad);
-                return "Vendido";
+                v.getMueble().setStock(stockm - cantidad);
+                return "Vendido: "+cantidad;
             }else throw new Exception("Stock insuficiente en variante "+id_variante);
 
         }return "Variante inexistente";
@@ -102,12 +127,11 @@ public class Controlador {
     public @ResponseBody String comprarVariante(int id_variante, int cantidad){
         Variante v = listarVariante(id_variante);
         if (v != null){
-            Mueble m = listarMueble(v.getId_mueble());
             int stockv = v.getStock();
-            int stockm = m.getStock();
+            int stockm = v.getMueble().getStock();
             v.setStock(stockv + cantidad);
-            m.setStock(stockm + cantidad);
-            return "Vendido";
+            v.getMueble().setStock(stockm + cantidad);
+            return "Comprado: "+cantidad;
         }return "Variante inexistente";
     }
 
@@ -162,6 +186,19 @@ public class Controlador {
             m.setEstado("INACTIVO");
             muebles.save(m);
             return "Desactivado";
+        }else{
+            return "Mueble no encontrado";
+        }
+    }
+
+    @PostMapping(path="/drp")
+    public @ResponseBody String eliminarMueble (@RequestParam Integer id_mueble) {
+        //(elimina en bdd. No se pide, pero se ve necesario por si acaso)
+        if (muebles.existsById(id_mueble)){
+            Iterable<Variante> v = variantes.findAllByIdMueble(id_mueble); //realiza query simple
+            variantes.deleteAll(v); //liberar variantes creadas
+            muebles.deleteById(id_mueble);
+            return "Eliminado";
         }else{
             return "Mueble no encontrado";
         }

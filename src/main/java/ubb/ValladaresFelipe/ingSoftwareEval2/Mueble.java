@@ -1,23 +1,28 @@
 package ubb.ValladaresFelipe.ingSoftwareEval2;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Mueble {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID_mueble")
     private Integer ID_mueble;
 
+    @Column(name = "nombre_mueble")
     private String nombre_mueble;
-
+    @Column(name = "tipo")
     private String tipo;
-
+    @Column(name = "precio_base")
     private Integer precio_base;
-
+    @Column(name = "stock")
     private Integer stock;
+
+    @OneToMany(mappedBy = "mueble")
+    private List<Variante> variantes;
+
 
 //    enum Estado {
 //        ACTIVO,

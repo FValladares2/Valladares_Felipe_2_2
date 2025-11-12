@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2025 at 02:00 PM
+-- Generation Time: Nov 12, 2025 at 02:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,14 +43,8 @@ CREATE TABLE `mueble` (
 --
 
 INSERT INTO `mueble` (`ID_mueble`, `nombre_mueble`, `tipo`, `precio_base`, `stock`, `estado`, `tamaño`, `material`) VALUES
-(1, 'mueble_ejemplo', 'silla', 120, 4, 'ACTIVO', 'MEDIANO', 'madera'),
-(2, 'mesa_madera', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera'),
-(51, 'testcrud', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera'),
-(101, 'testcrud', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera'),
-(151, 'testcrud', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera'),
-(201, 'testcrud', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera'),
-(251, 'testcrud', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera'),
-(301, 'testcrud', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera');
+(1, 'mueble_ejemplo', 'silla', 120, 2, 'ACTIVO', 'MEDIANO', 'madera'),
+(2, 'mesa_madera', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera');
 
 -- --------------------------------------------------------
 
@@ -67,7 +61,7 @@ CREATE TABLE `mueble_seq` (
 --
 
 INSERT INTO `mueble_seq` (`next_val`) VALUES
-(400);
+(2000);
 
 -- --------------------------------------------------------
 
@@ -88,13 +82,8 @@ CREATE TABLE `variante` (
 --
 
 INSERT INTO `variante` (`ID_variante`, `ID_mueble`, `modificacion`, `precio_extra`, `stock`) VALUES
-(-49, 2, 'Normal', 0, 8),
 (1, 1, 'ruedas de escritorio', 500, 2),
-(51, 101, 'Normal', 0, 8),
-(101, 151, 'Normal', 0, 8),
-(151, 201, 'Normal', 0, 8),
-(201, 251, 'Normal', 0, 8),
-(251, 301, 'Normal', 0, 8);
+(2, 2, 'Normal', 0, 4);
 
 -- --------------------------------------------------------
 
@@ -111,7 +100,7 @@ CREATE TABLE `variante_seq` (
 --
 
 INSERT INTO `variante_seq` (`next_val`) VALUES
-(350);
+(1950);
 
 --
 -- Indexes for dumped tables
@@ -127,8 +116,7 @@ ALTER TABLE `mueble`
 -- Indexes for table `variante`
 --
 ALTER TABLE `variante`
-  ADD PRIMARY KEY (`ID_variante`),
-  ADD UNIQUE KEY `ID_mueble` (`ID_mueble`);
+  ADD PRIMARY KEY (`ID_variante`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -138,23 +126,13 @@ ALTER TABLE `variante`
 -- AUTO_INCREMENT for table `mueble`
 --
 ALTER TABLE `mueble`
-  MODIFY `ID_mueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=302;
+  MODIFY `ID_mueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1902;
 
 --
 -- AUTO_INCREMENT for table `variante`
 --
 ALTER TABLE `variante`
-  MODIFY `ID_variante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `variante`
---
-ALTER TABLE `variante`
-  ADD CONSTRAINT `variante_fk` FOREIGN KEY (`ID_mueble`) REFERENCES `mueble` (`ID_mueble`);
+  MODIFY `ID_variante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1853;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
