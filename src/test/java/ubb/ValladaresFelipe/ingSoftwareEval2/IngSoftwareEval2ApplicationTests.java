@@ -2,12 +2,12 @@ package ubb.ValladaresFelipe.ingSoftwareEval2;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ubb.ValladaresFelipe.ingSoftwareEval2.control.Controlador;
+import ubb.ValladaresFelipe.ingSoftwareEval2.model.Mueble;
+import ubb.ValladaresFelipe.ingSoftwareEval2.model.Variante;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

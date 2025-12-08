@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Editando Mueble</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Editando Mueble</h1>
+    <hr>
+    <h2>Guarda un Mueble</h2>
+
+    <form action="#" th:action="@{/guardaMueble}" th:object="${mueble}"
+          method="POST">
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{ID_mueble}" />
+
+        <input type="text" th:field="*{nombre_mueble}" placeholder="Nombre Mueble"
+               class="form-control mb-4 col-4">
+        <input type="text" th:field="*{tipo}" placeholder="Tipo mueble"
+               class="form-control mb-4 col-4">
+        <input type="text" th:field="*{precio_base}" placeholder="Precio base"
+               class="form-control mb-4 col-4">
+        <input type="text" th:field="*{stock}" placeholder="Stock mueble"
+               class="form-control mb-4 col-4">
+        <select th:field="*{estado}">
+            <option value="activo"> Activo </option>
+            <option value="inactivo"> Inactivo </option>
+        </select>
+        <select th:field="*{tamano}">
+            <option value="grande"> Grande </option>
+            <option value="mediano"> Mediano </option>
+            <option value="pequeño"> Pequeño </option>
+        </select>
+        <input type="text" th:field="*{material}" placeholder="Material Mueble"
+               class="form-control mb-4 col-4">
+
+        <button type="submit" class="btn btn-info col-2">Guardar Mueble</button>
+    </form>
+
+    <hr>
+
+    <a th:href="@{/}">Menú inicial</a>
+</div>
+</body>
+</html>

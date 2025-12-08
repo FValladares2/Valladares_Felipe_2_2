@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Compra/Venta</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Compra/Venta de un Mueble</h1>
+    <hr>
+    <h2>Variante a transaccionar:</h2>
+
+    <table class="table table-hover table-bordered" id="tablaVariante">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th># Mueble</th>
+            <th>Modificacion</th>
+            <th>Precio Extra</th>
+            <th>Stock</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:object="${variante}">
+            <td th:text="${variante.getId_variante()}"></td>
+            <td th:text="${variante.getMueble().ID_mueble}"></td>
+            <td th:text="${variante.getModificacion()}"></td>
+            <td th:text="${variante.getPrecio_extra()}"></td>
+            <td th:text="${variante.getStock()}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <form action="#" th:action="@{/venderVariante}" th:object="${venta}"
+          method="POST">
+        <input type="hidden" th:field="*{id_variante}" />
+        <input type="text" th:field="*{cantidad}" placeholder="Cantidad a Vender"
+               class="form-control mb-4 col-4">
+        <select th:field="*{compra}">
+            <option value="compra"> Compra </option>
+            <option value="venta"> Venta </option>
+        </select>
+        <button type="submit" class="btn btn-info col-2">Realizar Transaccion</button>
+    </form>
+
+    <hr>
+
+    <a th:href="@{/}">Menú inicial</a>
+</div>
+</body>
+</html>

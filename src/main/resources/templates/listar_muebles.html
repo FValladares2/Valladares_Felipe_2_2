@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Muebles y Variantes</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+
+
+<div class="container">
+    <h1>Sistema de Muebles registrados</h1>
+    <a th:href="@{/editMueble/-1}" class="btn btn-primary btn-sm mb-3" >Nuevo Mueble</a>
+
+    <h4>Tabla de muebles:</h4>
+    <table class="table table-hover table-bordered" id="tablaMuebles">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Precio Base</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Tamano</th>
+            <th>Material</th>
+            <th>Acción</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="mueble:${muebles}">
+
+            <td th:text="${mueble.getID_mueble()}"></td>
+            <td th:text="${mueble.getNombre_mueble()}"></td>
+            <td th:text="${mueble.getTipo()}"></td>
+            <td th:text="${mueble.getPrecio_base()}"></td>
+            <td th:text="${mueble.getStock()}"></td>
+            <td th:text="${mueble.getEstado()}"></td>
+            <td th:text="${mueble.getTamano()}"></td>
+            <td th:text="${mueble.getMaterial()}"></td>
+
+            <td> <a th:href="@{/editMueble/{id}(id=${mueble.getID_mueble()})}"
+                    class="btn btn-primary">Actualizar</a>
+                <a th:href="@{/newVariante/{id}(id=${mueble.getID_mueble()})}"
+                   class="btn btn-primary">Nueva Variante</a>
+                <a th:href="@{/elimMueble/{id}(id=${mueble.getID_mueble()})}"
+                   class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <h4>Tabla de variantes:</h4>
+    <table class="table table-hover table-bordered" id="tablaVariantes">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th># Mueble</th>
+            <th>Modificacion</th>
+            <th>Precio Extra</th>
+            <th>Stock</th>
+            <th>Acción</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="variante:${variantes}">
+            <td th:text="${variante.getId_variante()}"></td>
+            <td th:text="${variante.getMueble().ID_mueble}"></td>
+            <td th:text="${variante.getModificacion()}"></td>
+            <td th:text="${variante.getPrecio_extra()}"></td>
+            <td th:text="${variante.getStock()}"></td>
+            <td> <a th:href="@{/editVariante/{id}(id=${variante.getId_variante()})}"
+                    class="btn btn-primary">Actualizar</a>
+                <a th:href="@{/venta/{id}(id=${variante.getId_variante()})}"
+                   class="btn btn-primary">Venta/compra</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+</body>
+</html>
