@@ -2,7 +2,7 @@
 #   del docker init para manejar usuario
 FROM eclipse-temurin:21-jdk-alpine
 
-WORKDIR /app
+WORKDIR /muebleria
 
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring

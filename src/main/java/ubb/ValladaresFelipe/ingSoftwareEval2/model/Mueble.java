@@ -28,7 +28,7 @@ public class Mueble {
 //        ACTIVO,
 //        INACTIVO
 //    }
-
+    @Column(name = "estado")
     private String estado;
 
 //    enum Tamaño {
@@ -36,9 +36,9 @@ public class Mueble {
 //        MEDIANO,
 //        PEQUEÑO
 //    }
-
+    @Column(name = "tamano")
     private String tamano;
-
+    @Column(name = "material")
     private String material;
 
     public Integer getID_mueble() {

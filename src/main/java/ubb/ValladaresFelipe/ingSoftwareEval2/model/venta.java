@@ -1,5 +1,8 @@
 package ubb.ValladaresFelipe.ingSoftwareEval2.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 public class venta {
     int id_variante;
     int cantidad;

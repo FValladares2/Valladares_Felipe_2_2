@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 12, 2025 at 02:59 AM
+-- Host: localhost
+-- Generation Time: Dec 10, 2025 at 11:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,23 +28,23 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `mueble` (
-  `ID_mueble` int(11) NOT NULL,
-  `nombre_mueble` text NOT NULL,
-  `tipo` text NOT NULL,
-  `precio_base` int(11) NOT NULL,
-  `stock` int(11) NOT NULL,
-  `estado` enum('ACTIVO','INACTIVO') NOT NULL,
-  `tamaño` enum('GRANDE','MEDIANO','PEQUEÑO') NOT NULL,
-  `material` text NOT NULL
+  `id_mueble` int(11) NOT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `nombre_mueble` varchar(255) DEFAULT NULL,
+  `precio_base` int(11) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `tipo` varchar(255) DEFAULT NULL,
+  `tamano` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `mueble`
 --
 
-INSERT INTO `mueble` (`ID_mueble`, `nombre_mueble`, `tipo`, `precio_base`, `stock`, `estado`, `tamaño`, `material`) VALUES
-(1, 'mueble_ejemplo', 'silla', 120, 2, 'ACTIVO', 'MEDIANO', 'madera'),
-(2, 'mesa_madera', 'mesa', 15, 8, 'ACTIVO', 'MEDIANO', 'madera');
+INSERT INTO `mueble` (`id_mueble`, `estado`, `material`, `nombre_mueble`, `precio_base`, `stock`, `tipo`, `tamano`) VALUES
+(52, 'activo', 'si', 'testing 1', 3, 10, 'silla', 'mediano'),
+(102, 'activo', 'madera', 'escritorio pc', 15, 11, 'mesa', 'mediano');
 
 -- --------------------------------------------------------
 
@@ -53,7 +53,7 @@ INSERT INTO `mueble` (`ID_mueble`, `nombre_mueble`, `tipo`, `precio_base`, `stoc
 --
 
 CREATE TABLE `mueble_seq` (
-  `next_val` bigint(20) NOT NULL
+  `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `mueble_seq` (
 --
 
 INSERT INTO `mueble_seq` (`next_val`) VALUES
-(2000);
+(201);
 
 -- --------------------------------------------------------
 
@@ -70,20 +70,22 @@ INSERT INTO `mueble_seq` (`next_val`) VALUES
 --
 
 CREATE TABLE `variante` (
-  `ID_variante` int(11) NOT NULL,
-  `ID_mueble` int(11) NOT NULL,
-  `modificacion` text NOT NULL,
-  `precio_extra` int(11) NOT NULL,
-  `stock` int(11) NOT NULL
+  `id_variante` int(11) NOT NULL,
+  `modificacion` varchar(255) DEFAULT NULL,
+  `precio_extra` int(11) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `id_mueble` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `variante`
 --
 
-INSERT INTO `variante` (`ID_variante`, `ID_mueble`, `modificacion`, `precio_extra`, `stock`) VALUES
-(1, 1, 'ruedas de escritorio', 500, 2),
-(2, 2, 'Normal', 0, 4);
+INSERT INTO `variante` (`id_variante`, `modificacion`, `precio_extra`, `stock`, `id_mueble`) VALUES
+(102, 'Normal', 0, 4, 52),
+(103, 'metal', 2, 6, 52),
+(152, 'Normal', 0, 8, 102),
+(153, 'Versión limitada', 8, 3, 102);
 
 -- --------------------------------------------------------
 
@@ -92,7 +94,7 @@ INSERT INTO `variante` (`ID_variante`, `ID_mueble`, `modificacion`, `precio_extr
 --
 
 CREATE TABLE `variante_seq` (
-  `next_val` bigint(20) NOT NULL
+  `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -100,7 +102,7 @@ CREATE TABLE `variante_seq` (
 --
 
 INSERT INTO `variante_seq` (`next_val`) VALUES
-(1950);
+(251);
 
 --
 -- Indexes for dumped tables
@@ -110,29 +112,24 @@ INSERT INTO `variante_seq` (`next_val`) VALUES
 -- Indexes for table `mueble`
 --
 ALTER TABLE `mueble`
-  ADD PRIMARY KEY (`ID_mueble`);
+  ADD PRIMARY KEY (`id_mueble`);
 
 --
 -- Indexes for table `variante`
 --
 ALTER TABLE `variante`
-  ADD PRIMARY KEY (`ID_variante`);
+  ADD PRIMARY KEY (`id_variante`),
+  ADD KEY `FK4j3mty4fml5nfyf0w9ulg4yb5` (`id_mueble`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Constraints for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `mueble`
---
-ALTER TABLE `mueble`
-  MODIFY `ID_mueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1902;
-
---
--- AUTO_INCREMENT for table `variante`
+-- Constraints for table `variante`
 --
 ALTER TABLE `variante`
-  MODIFY `ID_variante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1853;
+  ADD CONSTRAINT `FK4j3mty4fml5nfyf0w9ulg4yb5` FOREIGN KEY (`id_mueble`) REFERENCES `mueble` (`id_mueble`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
